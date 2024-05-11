@@ -1,4 +1,4 @@
-FROM python:3.9-alpine3.13
+FROM python:3.12.3-alpine3.19
 LABEL maintainer="Donato"
 
 ENV PYTHONUNBUFFERED 1
@@ -12,17 +12,11 @@ EXPOSE 8000
 ARG DEV=false
 RUN python -m venv /py && \
 	/py/bin/pip install --upgrade pip && \
-    # python -m ensurepip --upgrade && \
-	apk add --update --no-cache postgresql-client && \
+    apk add --update --no-cache postgresql-client && \
 	apk add --update --no-cache --virtual .tmp-build-deps \
-	    build-base postgresql-dev musl-dev &&  \
-    #pip install -r /tmp/requirements.dev.txt  &&   \
-    #/py/bin/pip install -r /tmp/requirements.txt && \
+	build-base postgresql postgresql-dev musl-dev &&  \
     /py/bin/pip install -r /tmp/requirements.txt && \
 	if [ $DEV = "true" ]; \
-    #    then pip install -r /tmp/requirements.dev.txt ; \
-    #   then /usr/bin/python install -r /tmp/requirements.dev.txt ; \
-    #    then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
         then /py/bin/pip install -r /tmp/requirements.txt ; \
 	fi && \
 	rm -rf /tmp && \
