@@ -24,6 +24,7 @@ services:
 
   db:
     image: postgres:16.3-alpine3.19
+    restart: always
     volumes:
       - dev-db-data:/var/lib/postgresql/data
     environment:
